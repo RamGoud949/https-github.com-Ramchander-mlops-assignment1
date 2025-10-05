@@ -1,0 +1,32 @@
+name: Python CI Pipeline
+
+on:
+  push:
+    branches: [ main, dtree ]
+  pull_request:
+    branches: [ main, dtree ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Decision Tree model
+      run: python train.py
+
+    - name: Run Kernel Ridge model
+      run: python train2.py
