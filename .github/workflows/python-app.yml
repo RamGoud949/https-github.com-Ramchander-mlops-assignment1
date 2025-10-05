@@ -2,9 +2,9 @@ name: Python CI Pipeline
 
 on:
   push:
-    branches: [ main, dtree ]
+    branches: [ dtree, main ]
   pull_request:
-    branches: [ main, dtree ]
+    branches: [ dtree, main ]
 
 jobs:
   build:
@@ -15,15 +15,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Python
+    - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
         python-version: 3.9
 
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - name: List files
+      run: ls -R
 
     - name: Run Decision Tree model
       run: python train.py
